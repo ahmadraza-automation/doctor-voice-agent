@@ -1,0 +1,21 @@
+Clinic Name: CarePlus Medical Center
+Location: Gulberg, Lahore, Pakistan
+Working Hours: Monday to Saturday, 9:00 AM to 5:00 PM
+Sunday: Closed
+Emergency: For life-threatening emergencies, call 1122 immediately.
+
+Doctors available:
+- Dr. Ahmed Khan (General Physician) - Mon, Wed, Fri
+- Dr. Sara Malik (Internal Medicine) - Tue, Thu, Sat
+- Dr. Usman Ali (Cardiologist) - By appointment only
+
+Appointment Policy:
+- Please arrive 10 minutes early.
+- Bring your previous medical reports if any.
+- Cancellation should be done at least 4 hours before appointment.
+- First consultation fee: Rs. 2000
+- Follow-up: Rs. 1500
+
+Important Notes:
+- This AI assistant cannot prescribe medicines or diagnose diseases.
+- Always consult a licensed doctor for personal medical advice.
