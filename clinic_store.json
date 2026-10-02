@@ -1,0 +1,206 @@
+{
+  "stats": [
+    {
+      "value": "24",
+      "label": "Today's Appointments"
+    },
+    {
+      "value": "156",
+      "label": "Active Patients"
+    },
+    {
+      "value": "98.5%",
+      "label": "Call Success Rate"
+    },
+    {
+      "value": "847",
+      "label": "Total Calls This Month"
+    }
+  ],
+  "weekly": [
+    {
+      "day": "Mon",
+      "value": 62
+    },
+    {
+      "day": "Tue",
+      "value": 74
+    },
+    {
+      "day": "Wed",
+      "value": 92
+    },
+    {
+      "day": "Thu",
+      "value": 81
+    },
+    {
+      "day": "Fri",
+      "value": 88
+    },
+    {
+      "day": "Sat",
+      "value": 58
+    },
+    {
+      "day": "Sun",
+      "value": 40
+    }
+  ],
+  "recent_calls": [
+    {
+      "patient": "Ahmed Hassan",
+      "duration": "3:45",
+      "status": "Completed",
+      "type": "Appointment Booking",
+      "time": "Today, 2:30 PM"
+    },
+    {
+      "patient": "Fatima Khan",
+      "duration": "2:15",
+      "status": "Completed",
+      "type": "Prescription Refill",
+      "time": "Today, 1:45 PM"
+    },
+    {
+      "patient": "Muhammad Ali",
+      "duration": "4:20",
+      "status": "In Progress",
+      "type": "Consultation",
+      "time": "Today, 12:00 PM"
+    }
+  ],
+  "patients": [
+    {
+      "id": "P001",
+      "first_name": "Ahmed",
+      "last_name": "Hassan",
+      "name": "Ahmed Hassan",
+      "phone": "03001234567",
+      "email": "ahmed.hassan@email.com",
+      "age": 35,
+      "gender": "male",
+      "last_visit": "2026-09-20",
+      "status": "Active",
+      "complaints": "Fever, fatigue, recurring headache",
+      "allergies": "Penicillin"
+    },
+    {
+      "id": "P002",
+      "first_name": "Fatima",
+      "last_name": "Khan",
+      "name": "Fatima Khan",
+      "phone": "03015678901",
+      "email": "fatima.khan@email.com",
+      "age": 28,
+      "gender": "female",
+      "last_visit": "2026-09-18",
+      "status": "Active",
+      "complaints": "Acid reflux, dizziness",
+      "allergies": "None"
+    },
+    {
+      "id": "P003",
+      "first_name": "Muhammad",
+      "last_name": "Ali",
+      "name": "Muhammad Ali",
+      "phone": "03009876543",
+      "email": "muhammad.ali@email.com",
+      "age": 42,
+      "gender": "male",
+      "last_visit": "2026-09-15",
+      "status": "Inactive",
+      "complaints": "Chest discomfort, high blood pressure",
+      "allergies": "Aspirin"
+    },
+    {
+      "id": "P004",
+      "first_name": "Ayesha",
+      "last_name": "Malik",
+      "name": "Ayesha Malik",
+      "phone": "03023456789",
+      "email": "ayesha.malik@email.com",
+      "age": 31,
+      "gender": "female",
+      "last_visit": "2026-09-12",
+      "status": "Active",
+      "complaints": "Migraine, sleep issues",
+      "allergies": "Dust"
+    }
+  ],
+  "doctors": [
+    {
+      "id": "dr_aisha",
+      "name": "Dr. Aisha Ahmed",
+      "specialty": "General Medicine",
+      "phone": "+92 300 1234567",
+      "availability": "Mon-Fri: 9:00 AM - 5:00 PM",
+      "rating": "4.9",
+      "is_active": true
+    },
+    {
+      "id": "dr_ahmed",
+      "name": "Dr. Ahmad Hassan",
+      "specialty": "Cardiology",
+      "phone": "+92 300 9876543",
+      "availability": "Mon-Sat: 10:00 AM - 6:00 PM",
+      "rating": 4.8,
+      "is_active": true
+    },
+    {
+      "id": "dr_fatima",
+      "name": "Dr. Fatima Khan",
+      "specialty": "Pediatrics",
+      "phone": "+92 300 5555555",
+      "availability": "Tue-Sun: 11:00 AM - 7:00 PM",
+      "rating": 4.9,
+      "is_active": true
+    }
+  ],
+  "appointments": [
+    {
+      "id": "A1001",
+      "patient": "Ahmed Hassan",
+      "patient_id": "P001",
+      "time": "9:00 AM",
+      "doctor": "Dr. Aisha",
+      "doctor_id": "dr_aisha",
+      "type": "General Checkup",
+      "status": "Confirmed",
+      "date": "2026-09-22"
+    },
+    {
+      "id": "A1002",
+      "patient": "Fatima Khan",
+      "patient_id": "P002",
+      "time": "9:30 AM",
+      "doctor": "Dr. Aisha",
+      "doctor_id": "dr_aisha",
+      "type": "Follow-up",
+      "status": "Confirmed",
+      "date": "2026-09-22"
+    },
+    {
+      "id": "A1003",
+      "patient": "Muhammad Ali",
+      "patient_id": "P003",
+      "time": "2:00 PM",
+      "doctor": "Dr. Ahmad",
+      "doctor_id": "dr_ahmed",
+      "type": "Emergency",
+      "status": "Pending",
+      "date": "2026-09-22"
+    },
+    {
+      "id": "A1004",
+      "patient": "Ayesha Malik",
+      "patient_id": "P004",
+      "time": "3:15 PM",
+      "doctor": "Dr. Fatima",
+      "doctor_id": "dr_fatima",
+      "type": "Pediatric Review",
+      "status": "Confirmed",
+      "date": "2026-09-22"
+    }
+  ]
+}
