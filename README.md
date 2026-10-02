@@ -29,46 +29,52 @@ Built with **FastAPI + Twilio + OpenAI** — handles real phone calls, appointme
 
 ## 🖼️ Screenshots
 
-### Hero — AI Receptionist
-![Hero](docs/screenshots/01-hero.png)
+### Dashboard Overview
+![Dashboard](docs/screenshots/00-dashboard-main.png)
 
-### Agents List
-![Agents](docs/screenshots/03-agents-list.png)
+### Weekly Call Analytics + Recent Calls
+![Analytics](docs/screenshots/01-dashboard-overview.png)
 
-### Prompt Configuration
-![Prompt](docs/screenshots/04-prompt-config.png)
+### Stats Cards
+![Stats](docs/screenshots/02-dashboard-stats.png)
 
-### Voice Selection
-![Voice](docs/screenshots/05-voice-select.png)
+### AI Assistant Settings
+![AI Settings](docs/screenshots/03-ai-assistant-settings.png)
 
-### Languages (English + Hindi)
-![Languages](docs/screenshots/06-languages.png)
+### Knowledge Base Training + Live Playground
+![Knowledge](docs/screenshots/04-ai-assistant-knowledge.png)
 
-### Post-call Automation
-![Post-call](docs/screenshots/07-post-call.png)
+### Call Logs
+![Call Logs](docs/screenshots/05-call-logs.png)
 
-### Live Test Call
-![Live Call](docs/screenshots/08-live-test-call.png)
+### Appointments
+![Appointments](docs/screenshots/06-appointments.png)
 
-### Booking Confirmed
-![Booking](docs/screenshots/09-booking-confirmed.png)
+### Patients Management
+![Patients](docs/screenshots/07-patients.png)
 
-### Call Outcome
-![Outcome](docs/screenshots/10-call-outcome.png)
+### Doctors Directory
+![Doctors](docs/screenshots/08-doctors.png)
+
+### Patient Medical History
+![History](docs/screenshots/09-patient-history.png)
+
+### Knowledge Base
+![KB](docs/screenshots/10-knowledge-base.png)
+
+### Advanced Analytics
+![Analytics](docs/screenshots/11-analytics.png)
+
+### System Integrations
+![Integrations](docs/screenshots/12-integrations.png)
 
 ---
 
 ## 🎬 Demo Video
 
-**Full demo (compressed):** [docs/demo/demo-appointment-booking.mp4](docs/demo/demo-appointment-booking.mp4)
+**Full demo (compressed ~2 MB):** [docs/demo/dr-aisha-clinic-demo.mp4](docs/demo/dr-aisha-clinic-demo.mp4)
 
-> 60-second walkthrough: Voice AI → Conversation → Booking → Email + Webhook
-
-**Suggested demo flow for your own recording:**
-1. Incoming call → Dr. Aisha greets in Urdu/English
-2. Patient books appointment
-3. Emergency scenario (chest pain) → redirects to 1122
-4. Dashboard updates live
+> Real walkthrough of the complete Dr. Aisha Clinic dashboard — Dashboard, AI Assistant, Call Logs, Appointments, Patients, Doctors, Knowledge Base, Analytics & Integrations.
 
 ---
 
@@ -161,7 +167,7 @@ doctor-voice-agent/
 ├── tools/                  # Appointment + knowledge + web search tools
 ├── knowledge/              # Clinic info knowledge base
 ├── docs/
-│   ├── screenshots/        # UI screenshots from demo
+│   ├── screenshots/        # Real UI screenshots
 │   └── demo/               # Compressed demo video
 ├── .env.example
 ├── requirements.txt
