@@ -29,24 +29,42 @@ Built with **FastAPI + Twilio + OpenAI** — handles real phone calls, appointme
 
 ## 🖼️ Screenshots
 
-> *Mock UI previews of the clinic dashboard & voice agent*
+### Hero — AI Receptionist
+![Hero](docs/screenshots/01-hero.png)
 
-### Dashboard Overview
-![Dashboard](docs/screenshots/dashboard.png)
+### Agents List
+![Agents](docs/screenshots/03-agents-list.png)
 
-### Live Call Interface
-![Call Screen](docs/screenshots/call-screen.png)
+### Prompt Configuration
+![Prompt](docs/screenshots/04-prompt-config.png)
 
-### Patient & Appointments
-![Patients](docs/screenshots/patients.png)
+### Voice Selection
+![Voice](docs/screenshots/05-voice-select.png)
+
+### Languages (English + Hindi)
+![Languages](docs/screenshots/06-languages.png)
+
+### Post-call Automation
+![Post-call](docs/screenshots/07-post-call.png)
+
+### Live Test Call
+![Live Call](docs/screenshots/08-live-test-call.png)
+
+### Booking Confirmed
+![Booking](docs/screenshots/09-booking-confirmed.png)
+
+### Call Outcome
+![Outcome](docs/screenshots/10-call-outcome.png)
 
 ---
 
 ## 🎬 Demo Video
 
-> Coming soon — record a 1–2 minute Loom / OBS demo and paste the YouTube / Loom link here.
+**Full demo (compressed):** [docs/demo/demo-appointment-booking.mp4](docs/demo/demo-appointment-booking.mp4)
 
-**Suggested demo flow:**
+> 60-second walkthrough: Voice AI → Conversation → Booking → Email + Webhook
+
+**Suggested demo flow for your own recording:**
 1. Incoming call → Dr. Aisha greets in Urdu/English
 2. Patient books appointment
 3. Emergency scenario (chest pain) → redirects to 1122
@@ -143,7 +161,8 @@ doctor-voice-agent/
 ├── tools/                  # Appointment + knowledge + web search tools
 ├── knowledge/              # Clinic info knowledge base
 ├── docs/
-│   └── screenshots/        # UI screenshots
+│   ├── screenshots/        # UI screenshots from demo
+│   └── demo/               # Compressed demo video
 ├── .env.example
 ├── requirements.txt
 └── README.md
