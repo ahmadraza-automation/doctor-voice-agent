@@ -23,7 +23,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
-PORT = int(os.getenv('PORT', 8000))
+PORT = int(os.getenv('PORT', 5050))
 TWILIO_ACCOUNT_SID = os.getenv('TWILIO_ACCOUNT_SID')
 TWILIO_AUTH_TOKEN = os.getenv('TWILIO_AUTH_TOKEN')
 TWILIO_PHONE_NUMBER = os.getenv('TWILIO_PHONE_NUMBER')
@@ -36,7 +36,7 @@ For emergencies (chest pain, difficulty breathing, severe bleeding): Tell them t
 Be professional, caring, concise. Support Urdu + English.
 Keep responses short (2-3 sentences max).'''
 
-app = FastAPI()
+app = FastAPI(title="Dr. Aisha — Doctor Voice Agent")
 
 if os.path.exists('static'):
     app.mount('/static', StaticFiles(directory='static'), name='static')
@@ -112,7 +112,15 @@ def place_outbound_call(doctor_name: str, phone_number: str):
 
 @app.get('/', response_class=HTMLResponse)
 async def index():
-    return FileResponse('static/index.html')
+    index_path = os.path.join('static', 'index.html')
+    if os.path.exists(index_path):
+        return FileResponse(index_path)
+    return HTMLResponse(
+        '<h1>Dr. Aisha is running</h1>'
+        '<p>Static UI missing. Chat API is available at <code>POST /chat</code>.</p>'
+        '<p><a href="/health">/health</a> · <a href="/api/dashboard">/api/dashboard</a></p>'
+    )
+
 
 @app.post('/chat')
 async def chat(request: Request):
@@ -123,30 +131,32 @@ async def chat(request: Request):
         if not user_message:
             raise HTTPException(status_code=400, detail='Empty message')
 
-        try:
-            response = requests.post(
-                'https://api.openai.com/v1/chat/completions',
-                headers={
-                    'Authorization': f'Bearer {OPENAI_API_KEY}',
-                    'Content-Type': 'application/json'
-                },
-                json={
-                    'model': 'gpt-4o-mini',
-                    'messages': [
-                        {'role': 'system', 'content': SYSTEM_PROMPT},
-                        {'role': 'user', 'content': user_message}
-                    ],
-                    'temperature': 0.7,
-                    'max_tokens': 500
-                },
-                timeout=10
-            )
-            result = response.json()
-            if 'choices' in result and len(result['choices']) > 0:
-                reply = result['choices'][0]['message']['content']
-                return JSONResponse({'reply': reply})
-        except Exception:
-            pass
+        # Prefer OpenAI if key is present
+        if OPENAI_API_KEY and OPENAI_API_KEY.startswith('sk-'):
+            try:
+                response = requests.post(
+                    'https://api.openai.com/v1/chat/completions',
+                    headers={
+                        'Authorization': f'Bearer {OPENAI_API_KEY}',
+                        'Content-Type': 'application/json'
+                    },
+                    json={
+                        'model': 'gpt-4o-mini',
+                        'messages': [
+                            {'role': 'system', 'content': SYSTEM_PROMPT},
+                            {'role': 'user', 'content': user_message}
+                        ],
+                        'temperature': 0.7,
+                        'max_tokens': 500
+                    },
+                    timeout=12
+                )
+                result = response.json()
+                if 'choices' in result and len(result['choices']) > 0:
+                    reply = result['choices'][0]['message']['content']
+                    return JSONResponse({'reply': reply})
+            except Exception as e:
+                logger.warning(f'OpenAI call failed, using fallback: {e}')
 
         return JSONResponse({'reply': build_assistant_reply(user_message)})
 
@@ -227,19 +237,28 @@ async def dial_doctor(request: Request):
 
 @app.get('/health')
 async def health():
-    return {'status': 'ok', 'message': 'Dr. Aisha is ready!'}
+    return {
+        'status': 'ok',
+        'message': 'Dr. Aisha is ready!',
+        'openai_configured': bool(OPENAI_API_KEY and OPENAI_API_KEY.startswith('sk-')),
+        'twilio_configured': bool(TWILIO_ACCOUNT_SID and TWILIO_AUTH_TOKEN and TWILIO_PHONE_NUMBER),
+    }
+
 
 @app.get('/api/dashboard')
 async def dashboard_data():
     return get_dashboard_data()
 
+
 @app.get('/api/patients')
 async def patients_data():
     return get_patients()
 
+
 @app.get('/api/doctors')
 async def doctors_data():
     return get_doctors()
+
 
 @app.get('/api/appointments')
 async def appointments_data():
@@ -317,6 +336,8 @@ async def shutdown_event():
 
 if __name__ == '__main__':
     import uvicorn
-    logger.info(f'🏥 Dr. Aisha Medical Assistant started on port {PORT}')
+    logger.info('🏥 Dr. Aisha Medical Assistant started')
     logger.info(f'📱 Open: http://localhost:{PORT}')
+    logger.info(f'🔑 OpenAI: {"configured" if OPENAI_API_KEY and OPENAI_API_KEY.startswith("sk-") else "NOT set (using fallback replies)"}')
+    logger.info(f'📞 Twilio: {"configured" if TWILIO_ACCOUNT_SID else "NOT set (voice calls disabled)"}')
     uvicorn.run(app, host='0.0.0.0', port=PORT, log_level='info')
