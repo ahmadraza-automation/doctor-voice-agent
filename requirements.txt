@@ -7,3 +7,5 @@ httpx==0.25.0
 requests==2.31.0
 twilio==9.10.0
 python-multipart==0.0.20
+# Optional (browser WebRTC calling)
+# aiortc==1.6.0

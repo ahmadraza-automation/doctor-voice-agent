@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dr. Aisha — Clinic Voice Agent</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: #e2e8f0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem;
+    }
+    .card {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 16px;
+      padding: 2rem;
+      max-width: 520px;
+      width: 100%;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    }
+    h1 { font-size: 1.75rem; margin-bottom: 0.25rem; }
+    .subtitle { color: #94a3b8; margin-bottom: 1.5rem; font-size: 0.95rem; }
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: #064e3b;
+      color: #6ee7b7;
+      padding: 0.35rem 0.75rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      margin-bottom: 1.5rem;
+    }
+    .status::before {
+      content: '';
+      width: 8px; height: 8px;
+      background: #34d399;
+      border-radius: 50%;
+      animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+    #chat {
+      height: 280px;
+      overflow-y: auto;
+      background: #0f172a;
+      border-radius: 12px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border: 1px solid #334155;
+    }
+    .msg {
+      margin-bottom: 0.75rem;
+      padding: 0.6rem 0.9rem;
+      border-radius: 12px;
+      max-width: 85%;
+      line-height: 1.4;
+      font-size: 0.95rem;
+    }
+    .msg.user {
+      background: #3b82f6;
+      color: white;
+      margin-left: auto;
+    }
+    .msg.bot {
+      background: #334155;
+      color: #e2e8f0;
+    }
+    .input-row {
+      display: flex;
+      gap: 0.5rem;
+    }
+    input {
+      flex: 1;
+      padding: 0.75rem 1rem;
+      border-radius: 10px;
+      border: 1px solid #475569;
+      background: #0f172a;
+      color: #e2e8f0;
+      font-size: 1rem;
+      outline: none;
+    }
+    input:focus { border-color: #3b82f6; }
+    button {
+      padding: 0.75rem 1.25rem;
+      border-radius: 10px;
+      border: none;
+      background: #3b82f6;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    button:hover { background: #2563eb; }
+    button:disabled { opacity: 0.6; cursor: not-allowed; }
+    .links {
+      margin-top: 1.5rem;
+      font-size: 0.85rem;
+      color: #94a3b8;
+      text-align: center;
+    }
+    .links a { color: #60a5fa; text-decoration: none; }
+    .links a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>🏥 Dr. Aisha</h1>
+    <p class="subtitle">AI Medical Voice & Chat Assistant</p>
+    <div class="status" id="status">Online</div>
+
+    <div id="chat">
+      <div class="msg bot">Hello! I am Dr. Aisha, your virtual medical assistant. How can I help you today?</div>
+    </div>
+
+    <div class="input-row">
+      <input id="input" type="text" placeholder="Type your message..." autocomplete="off" />
+      <button id="send">Send</button>
+    </div>
+
+    <div class="links">
+      <a href="/health" target="_blank">Health Check</a> ·
+      <a href="/api/dashboard" target="_blank">Dashboard API</a> ·
+      <a href="https://github.com/ahmadraza-automation/doctor-voice-agent" target="_blank">GitHub</a>
+    </div>
+  </div>
+
+  <script>
+    const chat = document.getElementById('chat');
+    const input = document.getElementById('input');
+    const sendBtn = document.getElementById('send');
+
+    function addMsg(text, who) {
+      const div = document.createElement('div');
+      div.className = 'msg ' + who;
+      div.textContent = text;
+      chat.appendChild(div);
+      chat.scrollTop = chat.scrollHeight;
+    }
+
+    async function send() {
+      const text = input.value.trim();
+      if (!text) return;
+      input.value = '';
+      addMsg(text, 'user');
+      sendBtn.disabled = true;
+
+      try {
+        const res = await fetch('/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: text })
+        });
+        const data = await res.json();
+        addMsg(data.reply || 'Sorry, something went wrong.', 'bot');
+      } catch (e) {
+        addMsg('Connection error. Is the server running?', 'bot');
+      }
+      sendBtn.disabled = false;
+      input.focus();
+    }
+
+    sendBtn.addEventListener('click', send);
+    input.addEventListener('keydown', e => { if (e.key === 'Enter') send(); });
+
+    // health check
+    fetch('/health').then(r => r.json()).then(d => {
+      if (d.status === 'ok') document.getElementById('status').textContent = 'Online — Ready';
+    }).catch(() => {
+      document.getElementById('status').textContent = 'Server issue';
+      document.getElementById('status').style.background = '#7f1d1d';
+      document.getElementById('status').style.color = '#fca5a5';
+    });
+  </script>
+</body>
+</html>
