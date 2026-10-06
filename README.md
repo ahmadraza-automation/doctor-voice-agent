@@ -16,7 +16,7 @@ Built with **FastAPI + Twilio + OpenAI** — handles real phone calls, appointme
 | Feature | Description |
 |---------|-------------|
 | 📞 **Real Phone Calls** | Inbound / outbound voice via Twilio |
-| 🗣️ **Natural Conversation** | OpenAI GPT-4o-mini + Realtime API |
+| 🗣️ **Natural Conversation** | OpenAI GPT-4o-mini (fallback replies if no key) |
 | 📅 **Appointment Booking** | Book / cancel / list appointments |
 | 🚨 **Emergency Handling** | Auto-detects emergencies → directs to 1122 / 911 |
 | 💊 **Safety First** | Never suggests medicines or diagnoses |
@@ -27,54 +27,84 @@ Built with **FastAPI + Twilio + OpenAI** — handles real phone calls, appointme
 
 ---
 
-## 🖼️ Screenshots
+## 🚀 Quick Start (Easiest)
 
-### Dashboard Overview
-![Dashboard](docs/screenshots/00-dashboard-main.png)
+### 1. Clone
+```bash
+git clone https://github.com/ahmadraza-automation/doctor-voice-agent.git
+cd doctor-voice-agent
+```
 
-### Weekly Call Analytics + Recent Calls
-![Analytics](docs/screenshots/01-dashboard-overview.png)
+### 2. One-command setup
 
-### Stats Cards
-![Stats](docs/screenshots/02-dashboard-stats.png)
+**Linux / Mac:**
+```bash
+chmod +x setup.sh run.sh
+./setup.sh
+```
 
-### AI Assistant Settings
-![AI Settings](docs/screenshots/03-ai-assistant-settings.png)
+**Windows:**
+```bat
+setup.bat
+```
 
-### Knowledge Base Training + Live Playground
-![Knowledge](docs/screenshots/04-ai-assistant-knowledge.png)
+This creates a virtualenv, installs dependencies, and copies `.env.example` → `.env`.
 
-### Call Logs
-![Call Logs](docs/screenshots/05-call-logs.png)
+### 3. Add your keys
 
-### Appointments
-![Appointments](docs/screenshots/06-appointments.png)
+Edit `.env`:
+```env
+OPENAI_API_KEY=sk-proj-xxxxxxxx          # optional but recommended
+TWILIO_ACCOUNT_SID=ACxxxxxxxx            # needed for real phone calls
+TWILIO_AUTH_TOKEN=your_token
+TWILIO_PHONE_NUMBER=+1234567890
+PORT=5050
+PUBLIC_URL=https://your-ngrok-url.ngrok-free.app
+```
 
-### Patients Management
-![Patients](docs/screenshots/07-patients.png)
+> **Tip:** Without OpenAI key the chat still works with smart fallback replies.  
+> Without Twilio the web chat + dashboard still work perfectly.
 
-### Doctors Directory
-![Doctors](docs/screenshots/08-doctors.png)
+### 4. Run
 
-### Patient Medical History
-![History](docs/screenshots/09-patient-history.png)
+**Linux / Mac:**
+```bash
+./run.sh
+```
 
-### Knowledge Base
-![KB](docs/screenshots/10-knowledge-base.png)
+**Windows:**
+```bat
+run.bat
+```
 
-### Advanced Analytics
-![Analytics](docs/screenshots/11-analytics.png)
+Or manually:
+```bash
+source venv/bin/activate   # Windows: venv\Scripts\activate
+python main.py
+```
 
-### System Integrations
-![Integrations](docs/screenshots/12-integrations.png)
+### 5. Open in browser
+```
+http://localhost:5050
+```
+
+You will see a clean chat UI. Type anything — Dr. Aisha replies.
 
 ---
 
-## 🎬 Demo Video
+## 📞 Real Phone Calls (Optional)
 
-**Full demo (compressed ~2 MB):** [docs/demo/dr-aisha-clinic-demo.mp4](docs/demo/dr-aisha-clinic-demo.mp4)
-
-> Real walkthrough of the complete Dr. Aisha Clinic dashboard — Dashboard, AI Assistant, Call Logs, Appointments, Patients, Doctors, Knowledge Base, Analytics & Integrations.
+1. Install [ngrok](https://ngrok.com) and run:
+   ```bash
+   ngrok http 5050
+   ```
+2. Copy the `https://xxxx.ngrok-free.app` URL into `.env` as `PUBLIC_URL`.
+3. Restart the server (`./run.sh`).
+4. In **Twilio Console** → Phone Numbers → your number → Voice webhook:
+   ```
+   POST https://YOUR-NGROK-URL.ngrok-free.app/voice/incoming
+   ```
+5. Call your Twilio number — Dr. Aisha answers.
 
 ---
 
@@ -97,62 +127,14 @@ Built with **FastAPI + Twilio + OpenAI** — handles real phone calls, appointme
 
 ---
 
-## 🚀 Quick Start
-
-### 1. Clone & Setup
-```bash
-git clone https://github.com/ahmadraza-automation/doctor-voice-agent.git
-cd doctor-voice-agent
-python -m venv venv
-
-# Windows
-venv\Scripts\activate
-
-# Mac / Linux
-source venv/bin/activate
-
-pip install -r requirements.txt
-```
-
-### 2. Environment
-```bash
-cp .env.example .env
-```
-
-Edit `.env`:
-```env
-OPENAI_API_KEY=sk-proj-xxxxxxxx
-TWILIO_ACCOUNT_SID=ACxxxxxxxx
-TWILIO_AUTH_TOKEN=your_token
-TWILIO_PHONE_NUMBER=+1234567890
-PORT=5050
-PUBLIC_URL=https://your-ngrok-url.ngrok-free.app
-```
-
-### 3. Run
-```bash
-python main.py
-```
-
-### 4. Expose with ngrok
-```bash
-ngrok http 5050
-```
-
-### 5. Twilio Webhook
-In Twilio Console → Phone Numbers → your number → Voice webhook:
-
-```
-POST https://YOUR-NGROK-URL.ngrok-free.app/voice/incoming
-```
-
----
-
 ## 📁 Project Structure
 
 ```
 doctor-voice-agent/
 ├── main.py                 # FastAPI app + Twilio + chat + WebRTC
+├── static/index.html       # Clean chat UI (works out of the box)
+├── setup.sh / setup.bat    # One-command install
+├── run.sh / run.bat        # One-command start
 ├── system_prompt.py        # Strict medical safety rules
 ├── clinic_data.py          # Dashboard data layer
 ├── clinic_store.json       # Sample patients, doctors, appointments
@@ -166,9 +148,6 @@ doctor-voice-agent/
 ├── messaging_service.py    # WhatsApp / Telegram / SMS ready
 ├── tools/                  # Appointment + knowledge + web search tools
 ├── knowledge/              # Clinic info knowledge base
-├── docs/
-│   ├── screenshots/        # Real UI screenshots
-│   └── demo/               # Compressed demo video
 ├── .env.example
 ├── requirements.txt
 └── README.md
@@ -190,7 +169,7 @@ doctor-voice-agent/
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| `GET`  | `/` | Frontend / health page |
+| `GET`  | `/` | Frontend chat UI |
 | `POST` | `/chat` | Text chat with Dr. Aisha |
 | `POST` | `/voice/incoming` | Twilio inbound call |
 | `POST` | `/voice/handle` | Speech handling |
@@ -200,7 +179,7 @@ doctor-voice-agent/
 | `GET`  | `/api/doctors` | Doctors list |
 | `GET`  | `/api/appointments` | Appointments |
 | `POST` | `/offer` | WebRTC offer (browser calling) |
-| `GET`  | `/health` | Health check |
+| `GET`  | `/health` | Health check + config status |
 
 ---
 
@@ -208,7 +187,7 @@ doctor-voice-agent/
 
 - **Backend**: FastAPI + Uvicorn
 - **Voice**: Twilio Programmable Voice
-- **AI**: OpenAI GPT-4o-mini / Realtime API
+- **AI**: OpenAI GPT-4o-mini (graceful fallback if no key)
 - **Data**: JSON store + optional MySQL (SQLAlchemy)
 - **Optional**: aiortc (WebRTC), WhatsApp/Telegram
 
