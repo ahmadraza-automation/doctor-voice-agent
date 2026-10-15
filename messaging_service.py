@@ -24,7 +24,6 @@ Patient: {patient_name}
 Thank you!
         """
         print(f"[NOTIFICATION] {patient_name}: {message}")
-        # WhatsApp/Telegram/SMS hoga jab number ho
         return True
     
     @staticmethod
@@ -38,7 +37,6 @@ Patient: {patient_name}
 Reason: {reason or 'General consultation'}
         """
         print(f"[DOCTOR ALERT] {message}")
-        # WhatsApp hoga jab number ho
         return True
     
     @staticmethod
